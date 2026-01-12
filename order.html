@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RESERVE PLOT</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <style>
+        body { background:#000; color:#fff; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+        .card { background:#111; border:2px solid #333; padding:35px; text-align:center; width:300px; border-radius:15px; }
+        input { width:90%; padding:15px; margin:20px 0; background:#000; color:#fff; border:1px solid #444; border-radius:5px; }
+        .btn { width:100%; padding:15px; background:#ef4444; color:#fff; font-weight:bold; border:none; cursor:pointer; border-radius:5px; }
+        #s-part { display:none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div id="f-part">
+            <h2 style="color:#facc15">OWN YOUR PLOT</h2>
+            <input type="text" id="bname" placeholder="Brand Name">
+            <button onclick="saveOrder()" id="subBtn" class="btn">SUBMIT ORDER</button>
+            <br><br><a href="index.html" style="color:#555; text-decoration:none; font-size:12px;">← Back to Home</a>
+        </div>
+        <div id="s-part">
+            <h1 style="color:#22c55e">✓ SUCCESSFUL!</h1>
+            <p>Order received by CEO Kawsar. Pay $20 and contact WhatsApp to go live.</p>
+            <button onclick="window.location.href='index.html'" class="btn" style="background:#444;">BACK TO HOME</button>
+        </div>
+    </div>
+    <script>
+        firebase.initializeApp({databaseURL: "https://m-legacy-5cf2b-default-rtdb.firebaseio.com/"});
+        function saveOrder() {
+            const n = document.getElementById('bname').value;
+            if(!n) return alert("Please enter brand name!");
+            document.getElementById('subBtn').innerText = "Processing...";
+            firebase.database().ref('orders/' + Date.now()).set({ name: n, plotID: Math.floor(Math.random()*20000) })
+            .then(() => { document.getElementById('f-part').style.display='none'; document.getElementById('s-part').style.display='block'; });
+        }
+    </script>
+</body>
+</html>
